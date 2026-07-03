@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  atm-system:
+    build: .
+    container_name: atm-face-recognition
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./dataset:/app/dataset
+      - ./trainer:/app/trainer
+      - ./accounts.json:/app/accounts.json
+      - /dev/video0:/dev/video0  # Webcam access
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_PORT=8501
+    restart: unless-stopped
+    # For GPU support, uncomment:
+    # runtime: nvidia
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
